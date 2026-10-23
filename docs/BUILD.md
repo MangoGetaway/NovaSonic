@@ -35,6 +35,6 @@ Additional checks: tab order, theme contrast, restore after restart, deletion ca
 
 ## Validation status
 
-- GitHub code has been authored and reviewed statically.
-- CI workflows are configured, but a passing run is **not yet claimed**.
+- Frontend typechecking/build and Linux Rust unit tests passed in [GitHub Actions run 39932223627](https://github.com/MangoGetaway/NovaSonic/actions/runs/39932223627) on 2026-10-23.
+- Real local model integration and disconnected-network traffic audits have **not** yet been completed.
 - Native package builds on Windows/macOS/Linux and model integration tests remain required before public alpha binaries.
