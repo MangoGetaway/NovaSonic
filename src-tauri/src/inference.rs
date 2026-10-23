@@ -58,6 +58,8 @@ pub async fn stream_chat(
         json!({ "model": selected.id, "messages": messages, "stream": true })
     };
     let client = reqwest::Client::builder()
+        .no_proxy()
+        .redirect(reqwest::redirect::Policy::none())
         .connect_timeout(Duration::from_secs(3))
         .build().map_err(|e| e.to_string())?;
     let response = client.post(&selected.chat_url).json(&body).send().await

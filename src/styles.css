@@ -167,7 +167,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .markdown pre { padding:15px; border:1px solid var(--border); background:var(--side-bg); border-radius:10px; overflow:auto; }
 .markdown code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.9em; }
 .markdown :not(pre)>code { padding:2px 5px; background:var(--elevated); border-radius:5px; }
-.markdown a { color:var(--accent-bright); }
+.markdown .text-link { color:var(--accent-bright); text-decoration:underline; text-decoration-style:dotted; }
 .markdown blockquote { margin:8px 0; padding:8px 13px; border-left:3px solid var(--accent); color:var(--muted); }
 .markdown table { width:100%; border-collapse:collapse; display:block; overflow-x:auto; }
 .markdown th,.markdown td { border:1px solid var(--border); padding:7px 10px; }

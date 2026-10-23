@@ -79,6 +79,8 @@ async fn models_for(client: Client, runtime: Runtime) -> Vec<LocalModel> {
 
 pub async fn discover() -> Vec<LocalModel> {
     let client = match Client::builder()
+        .no_proxy()
+        .redirect(reqwest::redirect::Policy::none())
         .timeout(Duration::from_secs(3))
         .connect_timeout(Duration::from_secs(2))
         .build() {

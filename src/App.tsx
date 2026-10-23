@@ -39,7 +39,7 @@ function Message({ message }: { message: Pick<ChatMessage, "role" | "content"> }
     <div className="message-content">
       <div className="message-speaker">{message.role === "assistant" ? "NovaSonic" : "You"}</div>
       {message.role === "assistant"
-        ? <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown></div>
+        ? <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]} components={{a: ({children, href}) => <span className="text-link" title={href}>{children}</span>}}>{message.content}</ReactMarkdown></div>
         : <p className="user-text">{message.content}</p>}
     </div>
   </article>;
@@ -296,7 +296,7 @@ export default function App() {
           <div className="chat-column">
             <div className="conversation-intro"><div className="eyebrow">CONVERSATION</div><h2>{activeConversation?.title ?? "New conversation"}</h2><span><ShieldCheck size={14}/> Private · Stored locally</span></div>
             {messages.map((message) => <Message message={message} key={message.id}/>)}
-            {request && request.conversationId === activeId && <article className="message assistant-message"><div className="message-avatar"><Mark small/></div><div className="message-content"><div className="message-speaker">NovaSonic <span className="generating">generating</span></div>{request.text ? <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]}>{request.text}</ReactMarkdown></div> : <div className="typing"><span/><span/><span/></div>}</div></article>}
+            {request && request.conversationId === activeId && <article className="message assistant-message"><div className="message-avatar"><Mark small/></div><div className="message-content"><div className="message-speaker">NovaSonic <span className="generating">generating</span></div>{request.text ? <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]} components={{a: ({children, href}) => <span className="text-link" title={href}>{children}</span>}}>{request.text}</ReactMarkdown></div> : <div className="typing"><span/><span/><span/></div>}</div></article>}
             <div ref={endRef} />
           </div>
         </div>
