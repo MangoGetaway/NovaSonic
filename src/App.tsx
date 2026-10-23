@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type RefObject } from "react";
 import {
   ArrowRight, ArrowUp, Check, ChevronDown, CircleAlert, Command, Cpu, HardDrive,
   LayoutGrid, Menu, MessageSquareText, Moon, Plus, RefreshCw, Search, Settings2,
@@ -63,6 +63,7 @@ export default function App() {
   const [error, setError] = useState("");
   const requestRef = useRef<RequestState>(null);
   const activeRef = useRef<string | null>(null);
+  const requestRefConversation = useRef("");
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -130,7 +131,6 @@ export default function App() {
   }, [refreshChats, refreshModels]);
 
   // A stable ref prevents a completion for a previous chat from overwriting the active view.
-  const requestRefConversation = useRef("");
   useEffect(() => { activeRef.current = activeId; }, [activeId]);
   useEffect(() => { requestRef.current = request; }, [request]);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [messages, request?.text]);
@@ -142,7 +142,7 @@ export default function App() {
         setSearch("");
         setActiveId(null);
         setPage("home");
-        inputRef.current?.focus();
+        setTimeout(() => inputRef.current?.focus(), 0);
       }
       if (event.key === "Escape" && page === "models") setPage(activeId ? "chat" : "home");
     };
@@ -193,6 +193,7 @@ export default function App() {
       setPage("models");
       return;
     }
+    let submitted = false;
     setBusy(true);
     setError("");
     setDraft("");
@@ -208,6 +209,7 @@ export default function App() {
         setMessages([]);
       }
       const userMessage = await backend.appendUser(conversationId, text);
+      submitted = true;
       setMessages((current) => [...current, userMessage]);
       const requestId = crypto.randomUUID();
       const state = { requestId, conversationId, text: "" };
@@ -219,7 +221,7 @@ export default function App() {
     } catch (err) {
       requestRef.current = null;
       setRequest(null);
-      setDraft(text);
+      if (!submitted) setDraft(text);
       setError(friendlyError(err));
     } finally { setBusy(false); }
   }
@@ -322,7 +324,7 @@ export default function App() {
 
 function Composer({ value, onChange, onKeyDown, inputRef, onSubmit, onCancel, processing, canSend, modelLabel }: {
   value: string; onChange: (value: string) => void; onKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
-  inputRef: React.RefObject<HTMLTextAreaElement | null>; onSubmit: () => void; onCancel: () => void; processing: boolean; canSend: boolean; modelLabel?: string;
+  inputRef: RefObject<HTMLTextAreaElement | null>; onSubmit: () => void; onCancel: () => void; processing: boolean; canSend: boolean; modelLabel?: string;
 }) {
   return <div className="composer-wrap"><div className="composer">
     <textarea ref={inputRef} value={value} rows={2} placeholder="Ask anything. Your thoughts stay here…" onChange={(event) => onChange(event.target.value)} onKeyDown={onKeyDown} aria-label="Message NovaSonic" disabled={!canSend && !processing} />
