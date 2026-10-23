@@ -7,7 +7,8 @@ use models::LocalModel;
 use std::{collections::HashMap, sync::Mutex};
 use storage::{Conversation, Message, Store};
 use tauri::{AppHandle, Emitter, Manager, State};
-use tokio::{sync::oneshot, task::JoinHandle};
+use tokio::sync::oneshot;
+use tauri::async_runtime::JoinHandle;
 
 pub struct AppState {
     store: Store,
